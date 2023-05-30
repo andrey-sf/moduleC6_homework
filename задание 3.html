@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      function sendMessage() {
+        const inputElement = document.getElementById('message-input');
+        const message = inputElement.value;
+
+        // Отображение сообщения в окне переписки
+        const chatWindow = document.getElementById('chat-window');
+        const messageElement = document.createElement('div');
+        messageElement.textContent = message;
+        chatWindow.appendChild(messageElement);
+
+        // Отправка сообщения на сервер
+        const socket = new WebSocket('wss://echo-ws-service.herokuapp.com');
+        socket.addEventListener('open', function (event) {
+          socket.send(message);
+        });
+
+        // Получение ответа от сервера (эхо-сообщение)
+        socket.addEventListener('message', function (event) {
+          const response = event.data;
+
+          // Отображение ответа в окне переписки
+          const responseElement = document.createElement('div');
+          responseElement.textContent = response;
+          chatWindow.appendChild(responseElement);
+        });
+      }
+
+      function sendLocation() {
+        // Получение геолокации
+        navigator.geolocation.getCurrentPosition(function (position) {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          // Формирование ссылки на OpenStreetMap с геолокацией
+          const link = document.createElement('a');
+          link.href = `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=16/${latitude}/${longitude}`;
+          link.textContent = 'Моя геолокация';
+
+          // Отображение ссылки в окне переписки
+          const chatWindow = document.getElementById('chat-window');
+          const linkElement = document.createElement('div');
+          linkElement.appendChild(link);
+          chatWindow.appendChild(linkElement);
+
+        });
+      }
+    </script>
+  </head>
+  <body>
+   
+
+    <input type="text" id="message-input">
+    <button onclick="sendMessage()">Отправить</button>
+    <button onclick="sendLocation()">Геолокация</button>
+    <div id="chat-window"></div>
+  </body>
+</html>

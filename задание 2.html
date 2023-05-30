@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #eaeaea;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="btn" onclick="showScreenSize()">Показать размеры экрана</button>
+
+    <script>
+      function showScreenSize() {
+        const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        const screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+        const message = `Размеры экрана: ${screenWidth}x${screenHeight}`;
+        alert(message);
+      }
+    </script>
+  </body>
+</html>
